@@ -32,7 +32,6 @@ public class Game  {
 					IMovable mover = (IMovable)Field.Cells[x][y];
 					Direction direction = mover.GetTurnDirection();
 					movements.add(new Movement(direction, x, y, mover));
-					Field.Cells[x][y] = mover.GetStayOn();
 				} catch (Exception e) {}
 			}
 		}
@@ -41,10 +40,26 @@ public class Game  {
 		for (int i = 0; i < movements.size(); i++) {
 			Movement movement = movements.get(i);
 			Position pos = new Position(movement.X + movement.Direction.Dx, movement.Y + movement.Direction.Dy); // newPos 1
-			ICell previous = newField.Cells[pos.X][pos.Y];
-			pos = movement.Mover.IsSurrender(pos, previous, new Position(movement.X, movement.Y));
-			previous = InvisibleCheck(newField.Cells[pos.X][pos.Y], Field.Cells[pos.X][pos.Y]);
-			newField.Cells[pos.X][pos.Y] = previous.Action(movement.Mover);
+			boolean flag = false;
+			for (int j = i + 1; j < movements.size(); j++) {
+				Movement next = movements.get(j);
+				if (next.X == pos.X && next.Y == pos.Y) {
+					Movement afterWaiting = movement.Waiting(5);
+					flag = !afterWaiting.Impatience;
+					if (flag)
+						movements.add(afterWaiting);
+					else
+						pos = new Position(movement.X, movement.Y);
+					break;
+				}
+			}
+			if (!flag) {
+				newField.Cells[movement.X][movement.Y] = Field.Cells[movement.X][movement.Y].GetStayOn();
+				ICell previous = newField.Cells[pos.X][pos.Y];
+				pos = movement.Mover.IsSurrender(pos, previous, new Position(movement.X, movement.Y));
+				previous = InvisibleCheck(newField.Cells[pos.X][pos.Y], Field.Cells[pos.X][pos.Y]);
+				newField.Cells[pos.X][pos.Y] = previous.Action(movement.Mover);
+			}
 		}
 		newField.Merge(Field);
 		newField.Fill();

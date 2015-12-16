@@ -23,4 +23,7 @@ public class DefaultAi implements IAi {
 		return new Direction(dx, dy);
 	}
 
+	public String GetAiName() {
+		return "DE";
+	}
 }

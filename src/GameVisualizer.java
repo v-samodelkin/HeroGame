@@ -23,9 +23,10 @@ public class GameVisualizer {
 		for (int i = 0; i < 30; i++)
 			System.out.println();
 		List<Hero> heroes = game.Field.GetHeroes();
+		heroes.sort(new HeroesByPointsComparator());
 		for (int i = 0; i < heroes.size(); i++) {
 			Hero hero = heroes.get(i);
-			System.out.println("Герой [" + hero.GetId() + "] набрал очков: " + hero.GetBonusesCount() + ". У него осталось единиц здоровья: " + hero.GetLivesCount() + ".");
+			System.out.println("Герой [" + hero.GetId() + " , " + hero.Ai.GetAiName() + "] набрал очков: " + hero.GetBonusesCount() + ". У него осталось единиц здоровья: " + hero.GetLivesCount() + ".");
 		}
 		
 		for (int y = 0; y < game.Field.GetLength(); y++) {

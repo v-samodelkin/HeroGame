@@ -36,4 +36,9 @@ public class LongRunnerAi implements IAi {
 			return new Direction(dx, dy);
 		}
 	}
+
+	@Override
+	public String GetAiName() {
+		return "LR";
+	}
 }
