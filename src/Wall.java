@@ -41,4 +41,9 @@ public class Wall implements ICell {
 		return this;
 	}
 
+	@Override
+	public boolean IsPassable() {
+		return false;
+	}
+
 }

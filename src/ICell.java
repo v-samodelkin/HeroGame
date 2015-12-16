@@ -7,5 +7,6 @@ public interface ICell {
 	public Position TryToScare(IMovable hero, Position from, Position to);
 	public boolean IsEmpty();
 	public int getViewId();
+	public boolean IsPassable();
 	public ICell TryHideBehind(ICell replacement);
 }

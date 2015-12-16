@@ -1,3 +1,5 @@
+import java.util.Random;
+
 // +
 public class Direction {
 	public static final Direction Up, Down, Left, Right, None;
@@ -19,6 +21,21 @@ public class Direction {
 
 	public boolean IsNone() {
 		return (Dx == 0) && (Dy == 0);
+	}
+
+	public static Direction Move(Position heroPosition, Position position) {
+		int Dx = position.X - heroPosition.X;
+		int Dy = position.Y - heroPosition.Y;
+		return new Direction(Dx, Dy).RandomNormalize();
+	}
+
+	public Direction RandomNormalize() {
+		Random rand = new Random();
+		int dx = Math.round(Math.signum(Dx));
+		int dy = Math.round(Math.signum(Dy));
+		dx = dx * (int)(Math.signum(rand.nextInt(2) + (1 - Math.abs(dy))));
+		dy = dy * (1 - Math.abs(dx));
+		return new Direction(dx, dy);
 	}
 
 }

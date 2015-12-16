@@ -1,6 +1,4 @@
 // +
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,7 +42,7 @@ public class Game  {
 					IMovable mover = (IMovable)Field.Cells[x][y];
 					Direction direction = mover.GetTurnDirection();
 					movements.add(new Movement(direction, x, y, mover));
-				} catch (Exception e) {}
+				} catch (ClassCastException e) {}
 			}
 		}
 		Field newField = Field.EmptyClone();

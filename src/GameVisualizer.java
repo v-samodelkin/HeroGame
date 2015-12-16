@@ -18,20 +18,21 @@ public class GameVisualizer {
 		CharMapper.put(V_TRAP, 'X');
 		CharMapper.put(V_R_TRAP, 'O');
 	}
-	
-	public static void Visualize (Game game) {
+
+
+	public static void Visualize(Field viewField) {
 		for (int i = 0; i < 30; i++)
 			System.out.println();
-		List<Hero> heroes = game.Field.GetHeroes();
+		List<Hero> heroes = viewField.GetHeroes();
 		heroes.sort(new HeroesByPointsComparator());
 		for (int i = 0; i < heroes.size(); i++) {
 			Hero hero = heroes.get(i);
 			System.out.println("Герой [" + hero.GetId() + " , " + hero.Ai.GetAiName() + "] набрал очков: " + hero.GetBonusesCount() + ". У него осталось единиц здоровья: " + hero.GetLivesCount() + ".");
 		}
 		
-		for (int y = 0; y < game.Field.GetLength(); y++) {
-			for (int x = 0; x < game.Field.GetWidth(); x++) {
-				System.out.print(CharMapper.get(game.Field.Cells[x][y].getViewId()));
+		for (int y = 0; y < viewField.GetLength(); y++) {
+			for (int x = 0; x < viewField.GetWidth(); x++) {
+				System.out.print(CharMapper.get(viewField.Cells[x][y].getViewId()));
 			}
 			System.out.println();
 		}

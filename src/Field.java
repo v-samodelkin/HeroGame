@@ -137,4 +137,12 @@ public class Field {
 	public int GetBonusCount() {
 		return GetBonusPositions().size();
 	}
+
+	public ICell TryGet(int x, int y) {
+		try {
+			return Cells[x][y];
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

@@ -15,7 +15,7 @@ public class Hero implements IMovable {
 	
 	public Hero(int bonuses, int lives, int id, Game game, ICell before, IAi ai) {
 		Bonuses = bonuses;
-		Lives = lives;
+		Lives = lives + 1;
 		Id = id;
 		CurrentGame = game;
 		Before = before;
@@ -61,10 +61,6 @@ public class Hero implements IMovable {
 
 	@Override
 	public ICell Action(IMovable movable) {
-		try {
-			Hero h = (Hero)movable;
-			System.out.println("!!!!!!!!!!!!! " + GetId() + " " + movable.GetId());
-		} catch (Exception e) {}
 		return Attacked(movable.GetDamage());
 	}
 
@@ -118,6 +114,10 @@ public class Hero implements IMovable {
 	@Override
 	public ICell TryHideBehind(ICell replacement) {
 		return this;
+	}
+	@Override
+	public boolean IsPassable() {
+		return false;
 	}
 
 }

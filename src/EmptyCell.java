@@ -33,4 +33,8 @@ public class EmptyCell implements ICell {
 	public ICell TryHideBehind(ICell replacement) {
 		return this;
 	}
+	@Override
+	public boolean IsPassable() {
+		return true;
+	}
 }

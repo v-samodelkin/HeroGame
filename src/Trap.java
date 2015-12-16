@@ -67,4 +67,9 @@ public class Trap implements ICell {
 	public ICell TryHideBehind(ICell replacement) {
 		return this;
 	}
+
+	@Override
+	public boolean IsPassable() {
+		return true;
+	}
 }
