@@ -13,6 +13,7 @@ public class Wall implements ICell {
 
 	@Override
 	public ICell Action(IMovable movable) {
+		System.out.println("Head-On");
 		return movable.Die();
 	}
 
@@ -22,7 +23,7 @@ public class Wall implements ICell {
 	}
 
 	@Override
-	public Position TryToScare(Hero hero, Position from, Position to) {
+	public Position TryToScare(IMovable mover, Position from, Position to) {
 		return to;
 	}
 

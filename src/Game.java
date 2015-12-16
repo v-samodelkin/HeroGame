@@ -1,9 +1,21 @@
 // +
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game  {
 	public Field Field;
 	private int NextHeroId = 0;
+	
+	public static final HashMap<Boolean, IMovementAction> ActByReadyToWaiting;
+	
+	static {
+		ActByReadyToWaiting = new HashMap<Boolean, IMovementAction>();
+		ActByReadyToWaiting.put(false, new ProcessMovementAction());
+		ActByReadyToWaiting.put(true, new AddToMovementsAction());
+	}
+	
 	public Game(int width, int height) {
 		Field = new Field(width, height);
 	}
@@ -40,38 +52,16 @@ public class Game  {
 		for (int i = 0; i < movements.size(); i++) {
 			Movement movement = movements.get(i);
 			Position pos = new Position(movement.X + movement.Direction.Dx, movement.Y + movement.Direction.Dy); // newPos 1
-			boolean flag = false;
+			int wishers = 0;
 			for (int j = i + 1; j < movements.size(); j++) {
 				Movement next = movements.get(j);
-				if (next.X == pos.X && next.Y == pos.Y) {
-					Movement afterWaiting = movement.Waiting(5);
-					flag = !afterWaiting.Impatience;
-					if (flag)
-						movements.add(afterWaiting);
-					else
-						pos = new Position(movement.X, movement.Y);
-					break;
-				}
+				wishers += BoolMapper.Get(next.X == pos.X && next.Y == pos.Y);
 			}
-			if (!flag) {
-				newField.Cells[movement.X][movement.Y] = Field.Cells[movement.X][movement.Y].GetStayOn();
-				ICell previous = newField.Cells[pos.X][pos.Y];
-				pos = movement.Mover.IsSurrender(pos, previous, new Position(movement.X, movement.Y));
-				previous = InvisibleCheck(newField.Cells[pos.X][pos.Y], Field.Cells[pos.X][pos.Y]);
-				newField.Cells[pos.X][pos.Y] = previous.Action(movement.Mover);
-			}
+			ActByReadyToWaiting.get(wishers > 0 && !movement.Waiting(5).Impatience).Act(movements, movement.Waiting(5), newField, Field);
 		}
 		newField.Merge(Field);
 		newField.Fill();
 		Field = newField;
-	}
-	
-	public ICell InvisibleCheck(ICell verifiable, ICell replacement) {
-		try {
-			return verifiable.TryHideBehind(replacement);
-		} catch (Exception e) {
-			return replacement;
-		}
 	}
 
 	private void Ticks() {

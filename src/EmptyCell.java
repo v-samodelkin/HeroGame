@@ -18,7 +18,7 @@ public class EmptyCell implements ICell {
 		return this;
 	}
 	@Override
-	public Position TryToScare(Hero hero, Position from, Position to) {
+	public Position TryToScare(IMovable mover, Position from, Position to) {
 		return from;
 	}
 	@Override

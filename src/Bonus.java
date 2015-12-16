@@ -37,7 +37,7 @@ public class Bonus implements ICell {
 
 
 	@Override
-	public Position TryToScare(Hero hero, Position from, Position to) {
+	public Position TryToScare(IMovable mover, Position from, Position to) {
 		return from;
 	}
 

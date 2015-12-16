@@ -4,7 +4,7 @@ public interface ICell {
 	public ICell Tick();
 	public ICell Action(IMovable mover);
 	public ICell GetStayOn();
-	public Position TryToScare(Hero hero, Position from, Position to);
+	public Position TryToScare(IMovable hero, Position from, Position to);
 	public boolean IsEmpty();
 	public int getViewId();
 	public ICell TryHideBehind(ICell replacement);
