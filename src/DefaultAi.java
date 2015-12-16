@@ -1,5 +1,4 @@
-// 1 if
-import java.util.ArrayList;
+// +
 import java.util.List;
 import java.util.Random;
 
@@ -9,15 +8,13 @@ public class DefaultAi implements IAi {
 	public Direction GetTurnDirection(Hero hero, Field viewField) {
 		Position heroPosition = hero.GetPosition(viewField);
 		List<Position> bonuses = viewField.GetBonusPositions();
-		
-		Position mostClose = heroPosition;
-		int dist = 10000;
-		for (int i = 0; i < bonuses.size(); i++) 
-			if (heroPosition.Distantion(bonuses.get(i)) < dist) {
-				mostClose = bonuses.get(i);
-				dist = heroPosition.Distantion(bonuses.get(i));
-			}
-		
+		bonuses.sort(new BonusComparator(heroPosition));
+		Position mostClose;
+		try {
+			mostClose = bonuses.get(0);
+		} catch (Exception e) {
+			mostClose = heroPosition;
+		}
 		int dx = Math.round(Math.signum(mostClose.X - heroPosition.X));
 		int dy = Math.round(Math.signum(mostClose.Y - heroPosition.Y));
 		Random rand = new Random();

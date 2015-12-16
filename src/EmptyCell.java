@@ -2,7 +2,7 @@
 public class EmptyCell implements ICell {
 
 	@Override
-	public ICell View(Hero hero) {
+	public ICell ViewBy(Hero hero) {
 		return this;
 	}
 	@Override
@@ -22,11 +22,15 @@ public class EmptyCell implements ICell {
 		return from;
 	}
 	@Override
-	public int IsEmpty() {
-		return 1;
+	public boolean IsEmpty() {
+		return true;
 	}
 	@Override
 	public int getViewId() {
 		return GameVisualizer.V_EMPTY;
+	}
+	@Override
+	public ICell TryHideBehind(ICell replacement) {
+		return this;
 	}
 }

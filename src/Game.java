@@ -1,3 +1,4 @@
+// +
 import java.util.ArrayList;
 
 public class Game  {
@@ -19,6 +20,11 @@ public class Game  {
 	
 	public void MakeTurn() {
 		Ticks();
+		Moves();
+		Field.GenerateBonuses();
+	}
+	
+	private void Moves() {
 		ArrayList<Movement> movements = new ArrayList<Movement>();
 		for (int x = 0; x < Field.GetWidth(); x++) {
 			for (int y = 0; y < Field.GetLength(); y++) {
@@ -27,9 +33,7 @@ public class Game  {
 					Direction direction = mover.GetTurnDirection();
 					movements.add(new Movement(direction, x, y, mover));
 					Field.Cells[x][y] = mover.GetStayOn();
-				} catch (Exception e) {
-					
-				}
+				} catch (Exception e) {}
 			}
 		}
 		Field newField = Field.EmptyClone();
@@ -39,32 +43,20 @@ public class Game  {
 			Position pos = new Position(movement.X + movement.Direction.Dx, movement.Y + movement.Direction.Dy); // newPos 1
 			ICell previous = newField.Cells[pos.X][pos.Y];
 			pos = movement.Mover.IsSurrender(pos, previous, new Position(movement.X, movement.Y));
-			if (previous != null && !(movement.Mover instanceof IKiller))
-				pos =  new Position(movement.X, movement.Y);
-			previous = newField.Cells[pos.X][pos.Y];
-			if (previous == null)
-				previous = Field.Cells[pos.X][pos.Y];
+			previous = InvisibleCheck(newField.Cells[pos.X][pos.Y], Field.Cells[pos.X][pos.Y]);
 			newField.Cells[pos.X][pos.Y] = previous.Action(movement.Mover);
 		}
 		newField.Merge(Field);
 		newField.Fill();
 		Field = newField;
-		GenerateBonuses();
 	}
 	
-	private void GenerateBonuses() {
-		if (GetBonusCount() < 2) {
-			Field.InsertBonus();
+	public ICell InvisibleCheck(ICell verifiable, ICell replacement) {
+		try {
+			return verifiable.TryHideBehind(replacement);
+		} catch (Exception e) {
+			return replacement;
 		}
-	}
-	
-	public int GetBonusCount() {
-		int count = 0;
-		for (int x = 0; x < Field.GetWidth(); x++)
-			for (int y = 0; y < Field.GetLength(); y++)
-				if (Field.Cells[x][y] instanceof Bonus)
-					count+=1;
-		return count;
 	}
 
 	private void Ticks() {
@@ -74,10 +66,10 @@ public class Game  {
 	}
 
 	public Field GetViewField(Hero hero) {
-		ICell ViewField[][] = new ICell[Field.GetWidth()][Field.GetLength()];
+		ICell VisibleCells[][] = new ICell[Field.GetWidth()][Field.GetLength()];
 		for (int x = 0; x < Field.GetWidth(); x++)
 			for (int y = 0; y < Field.GetLength(); y++)
-				ViewField[x][y] = Field.Cells[x][y].View(hero);
-		return new Field(ViewField);
+				VisibleCells[x][y] = Field.Cells[x][y].ViewBy(hero);
+		return new Field(VisibleCells);
 	}
 }

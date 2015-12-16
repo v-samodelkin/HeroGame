@@ -1,3 +1,4 @@
+// +
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class Hero implements IMovable {
 	
 	public Hero(int bonuses, int lives, int id, Game game, ICell before, IAi ai) {
 		Bonuses = bonuses;
-		Lives = lives;
+		Lives = lives + 2;
 		Id = id;
 		CurrentGame = game;
 		Before = before;
@@ -49,7 +50,7 @@ public class Hero implements IMovable {
 	}
 
 	@Override
-	public ICell View(Hero hero) {
+	public ICell ViewBy(Hero hero) {
 		return this;
 	}
 	
@@ -60,6 +61,10 @@ public class Hero implements IMovable {
 
 	@Override
 	public ICell Action(IMovable movable) {
+		try {
+			Hero h = (Hero)movable;
+			System.out.println("!!!!!!!!!!!!!");
+		} catch (Exception e) {}
 		return Attacked(movable.GetDamage());
 	}
 
@@ -103,12 +108,16 @@ public class Hero implements IMovable {
 		return to;
 	}
 	@Override
-	public int IsEmpty() {
-		return 0;
+	public boolean IsEmpty() {
+		return false;
 	}
 	
 	public int getViewId() {
 		return GameVisualizer.V_HERO;
+	}
+	@Override
+	public ICell TryHideBehind(ICell replacement) {
+		return this;
 	}
 
 }

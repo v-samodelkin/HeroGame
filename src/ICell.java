@@ -1,10 +1,11 @@
 
 public interface ICell {
-	public ICell View(Hero hero);
+	public ICell ViewBy(Hero hero);
 	public ICell Tick();
 	public ICell Action(IMovable mover);
 	public ICell GetStayOn();
 	public Position TryToScare(Hero hero, Position from, Position to);
-	public int IsEmpty();
+	public boolean IsEmpty();
 	public int getViewId();
+	public ICell TryHideBehind(ICell replacement);
 }

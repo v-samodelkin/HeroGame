@@ -1,9 +1,10 @@
+// +
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-// @#&^@$&@%#^&$%#$@
+
 public class Field {
 	public ICell Cells[][];
 	public Field (int width, int height) {
@@ -29,7 +30,7 @@ public class Field {
 		int counter = 0;
 		for (int x = 0; x < GetWidth(); x++)
 			for (int y  = 0; y < GetLength(); y++)
-				counter += (int)Cells[x][y].IsEmpty();
+				counter += BoolMapper.Get(Cells[x][y].IsEmpty());
 		return counter;
 	}
 
@@ -48,8 +49,11 @@ public class Field {
 	public void Merge(Field field) {
 		for (int x = 0; x < GetWidth(); x++) {
 			for (int y = 0; y < GetLength(); y++) {
-				if (Cells[x][y] == null)
+				try {
+					Cells[x][y] = Cells[x][y].TryHideBehind(field.Cells[x][y]);
+				} catch (Exception e) {
 					Cells[x][y] = field.Cells[x][y];
+				}
 			}
 		}
 	}
@@ -57,18 +61,24 @@ public class Field {
 	public void Fill() {
 		for (int x = 0; x < GetWidth(); x++) {
 			for (int y = 0; y < GetLength(); y++) {
-				if (Cells[x][y] == null)
+				try {
+					Cells[x][y] = Cells[x][y].TryHideBehind(new EmptyCell());
+				} catch (Exception e) {
 					Cells[x][y] = new EmptyCell();
+				}
 			}
 		}
 	}
 
 	public List<Position> GetBonusPositions() {
 		List<Position> bonusPositions = new ArrayList<Position>();
+		List<Bonus> Bonuses = new ArrayList<Bonus>();
 		for (int x = 0; x < GetWidth(); x++)
 			for (int y = 0; y < GetLength(); y++)
-				if (Cells[x][y] instanceof Bonus)
+				try {
+					Bonuses.add((Bonus)Cells[x][y]);
 					bonusPositions.add(new Position(x, y));
+				} catch (Exception e) {}
 		return bonusPositions;
 	}
 	
@@ -76,8 +86,9 @@ public class Field {
 		List<Hero> heroes = new ArrayList<Hero>();
 		for (int x = 0; x < GetWidth(); x++)
 			for (int y = 0; y < GetLength(); y++)
-				if (Cells[x][y] instanceof Hero)
+				try {
 					heroes.add((Hero)Cells[x][y]);
+				} catch (Exception e) {}
 		return heroes;
 	}
 
@@ -88,8 +99,7 @@ public class Field {
 	}
 
 	public Field EmptyClone() {
-		ICell[][] newCells = new ICell[GetWidth()][GetLength()];
-		return new Field(newCells);
+		return new Field(new ICell[GetWidth()][GetLength()]);
 	}
 	
 	public boolean InsertBonus() {
@@ -98,22 +108,17 @@ public class Field {
 	
 	public boolean Insert(ICell object) {
 		Random rand = new Random();
-		if (EmptyCellsCount() > 0) {
-			while (true) {
-				int newx = rand.nextInt(GetWidth());
-				int newy = rand.nextInt(GetLength());
-				if (Cells[newx][newy].IsEmpty() == 1) {
-					Cells[newx][newy] = object;
-					return true;
-				}
-			}
-		}
-		return false;
+		int newx, newy;
+		do {
+			newx = rand.nextInt(GetWidth());
+			newy = rand.nextInt(GetLength());
+		} while (!Cells[newx][newy].IsEmpty());
+		Cells[newx][newy] = object;
+		return true;
 	}
 
 	public boolean InsertHero(IAi ai, Game game) {
-		Hero hero = new Hero(game, ai);
-		return Insert(hero);
+		return Insert(new Hero(game, ai));
 	}
 
 	public Position GetPosition(ICell cell) {
@@ -122,5 +127,14 @@ public class Field {
 			for (int y = 0 ; y < GetLength(); y++)
 				positions.put(Cells[x][y], new Position(x, y));
 		return positions.get(cell);
+	}
+	
+	public void GenerateBonuses() {
+		while (GetBonusCount() < 2)
+			InsertBonus();
+	}
+	
+	public int GetBonusCount() {
+		return GetBonusPositions().size();
 	}
 }

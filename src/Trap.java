@@ -1,5 +1,4 @@
 // +
-
 import com.google.common.collect.ImmutableSet;
 
 public class Trap implements ICell {
@@ -21,7 +20,7 @@ public class Trap implements ICell {
 		this(0, 10, ImmutableSet.of());
 	}
 	@Override
-	public ICell View(Hero hero) {
+	public ICell ViewBy(Hero hero) {
 		return (MovablesId.contains(hero.Id) ? this : new EmptyCell());
 	}
 
@@ -56,11 +55,16 @@ public class Trap implements ICell {
 	}
 	
 	@Override
-	public int IsEmpty() {
-		return 0;
+	public boolean IsEmpty() {
+		return false;
 	}
 	
 	public int getViewId() {
 		return Action.GetViewId();
+	}
+
+	@Override
+	public ICell TryHideBehind(ICell replacement) {
+		return this;
 	}
 }

@@ -2,7 +2,7 @@
 public class Wall implements ICell {
 
 	@Override
-	public ICell View(Hero hero) {
+	public ICell ViewBy(Hero hero) {
 		return this;
 	}
 
@@ -27,12 +27,17 @@ public class Wall implements ICell {
 	}
 
 	@Override
-	public int IsEmpty() {
-		return 0;
+	public boolean IsEmpty() {
+		return false;
 	}
 	
 	public int getViewId() {
 		return GameVisualizer.V_WALL;
+	}
+
+	@Override
+	public ICell TryHideBehind(ICell replacement) {
+		return this;
 	}
 
 }

@@ -14,7 +14,7 @@ public class Bonus implements ICell {
 	
 	
 	@Override
-	public ICell View(Hero hero) {
+	public ICell ViewBy(Hero hero) {
 		return this;
 	}
 	
@@ -43,13 +43,19 @@ public class Bonus implements ICell {
 
 
 	@Override
-	public int IsEmpty() {
-		return 0;
+	public boolean IsEmpty() {
+		return false;
 	}
 
 
 	@Override
 	public int getViewId() {
 		return GameVisualizer.V_BONUS;
+	}
+
+
+	@Override
+	public ICell TryHideBehind(ICell replacement) {
+		return this;
 	}
 }
