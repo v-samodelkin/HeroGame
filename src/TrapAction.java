@@ -1,3 +1,4 @@
+// +
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,4 +19,6 @@ public abstract class TrapAction {
 	public static TrapAction GetAction(int currentCooldown) {
 		return ActionMapper.get(currentCooldown == 0);
 	}
+
+	public abstract int GetViewId();
 }

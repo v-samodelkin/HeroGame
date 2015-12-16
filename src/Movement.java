@@ -1,4 +1,4 @@
-
+// +
 public class Movement {
 	public final Direction Direction;
 	public final int X, Y;

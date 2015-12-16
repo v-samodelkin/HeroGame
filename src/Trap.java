@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+// +
 
 import com.google.common.collect.ImmutableSet;
 
@@ -29,7 +27,6 @@ public class Trap implements ICell {
 
 	@Override
 	public Trap Tick() {
-		int decreasedCooldown = GetDecreasedCooldown();
 		return new Trap (GetDecreasedCooldown(), MaxCooldown, MovablesId);
 	}
 	
@@ -38,12 +35,32 @@ public class Trap implements ICell {
 	}
 
 	public Trap Act(int triggerId) {
-		ImmutableSet.Builder<Integer> builder = MovablesId.builder();
+		ImmutableSet.Builder<Integer> builder = new ImmutableSet.Builder<Integer>();
+		builder.addAll(MovablesId);
 		return new Trap(MaxCooldown, MaxCooldown, builder.add(triggerId).build());
 	}
 	
 	@Override
 	public ICell Action(IMovable movable) {
 		return Action.Act(movable, this).StayOn(Action.AfterAct(movable, this));
+	}
+
+	@Override
+	public ICell GetStayOn() {
+		return this;
+	}
+
+	@Override
+	public Position TryToScare(Hero hero, Position from, Position to) {
+		return from;
+	}
+	
+	@Override
+	public int IsEmpty() {
+		return 0;
+	}
+	
+	public int getViewId() {
+		return Action.GetViewId();
 	}
 }

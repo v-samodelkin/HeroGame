@@ -1,4 +1,4 @@
-
+// +
 public class Position {
 	public final int X, Y;
 	public final boolean Found;

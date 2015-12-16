@@ -1,17 +1,22 @@
+// +
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GameVisualizer {
-	public static Map<Class, Character> CharMapper;
+	public static Map<Integer, Character> CharMapper;
+	
+	public static final int V_HERO = 0, V_R_TRAP = 1, V_TRAP = 2, V_WALL = 3, V_EMPTY = 4, V_BONUS = 5;
+	
 	
 	static {
-		CharMapper = new HashMap<Class, Character>();
-		CharMapper.put(Hero.class, '@');
-		CharMapper.put(Wall.class, '#');
-		CharMapper.put(EmptyCell.class, '.');
-		CharMapper.put(Bonus.class, '+');
-		CharMapper.put(Trap.class, 'X');
+		CharMapper = new HashMap<Integer, Character>();
+		CharMapper.put(V_HERO, '@');
+		CharMapper.put(V_WALL, '#');
+		CharMapper.put(V_EMPTY, '.');
+		CharMapper.put(V_BONUS, '+');
+		CharMapper.put(V_TRAP, 'X');
+		CharMapper.put(V_R_TRAP, 'O');
 	}
 	
 	public static void Visualize (Game game) {
@@ -25,10 +30,7 @@ public class GameVisualizer {
 		
 		for (int y = 0; y < game.Field.GetLength(); y++) {
 			for (int x = 0; x < game.Field.GetWidth(); x++) {
-				if (game.Field.Cells[x][y].getClass() == Trap.class) 
-					System.out.print(((Trap)game.Field.Cells[x][y]).Cooldown > 0 ? "O" : "X");
-				else
-					System.out.print(CharMapper.get(game.Field.Cells[x][y].getClass()));
+				System.out.print(CharMapper.get(game.Field.Cells[x][y].getViewId()));
 			}
 			System.out.println();
 		}

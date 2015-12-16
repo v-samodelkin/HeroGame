@@ -1,9 +1,9 @@
-
+// +
 public class Index {
 	public static void main(String[] args) {
 		Game game = new Game(20, 10);
-		game.InsertHero(new DefaultAi());
-		game.InsertHero(new LongRunnerAi());
+		game.Field.InsertHero(new DefaultAi(), game);
+		game.Field.InsertHero(new LongRunnerAi(), game);
 		for (int i = 0; i < game.Field.GetWidth(); i++)
 			game.Field.Cells[i][4] = new Trap();
 		for (int i = 0; i < 1000; i++) {

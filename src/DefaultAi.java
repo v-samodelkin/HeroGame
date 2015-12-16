@@ -1,7 +1,8 @@
+// 1 if
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-// 1 if
+
 public class DefaultAi implements IAi {
 
 	@Override

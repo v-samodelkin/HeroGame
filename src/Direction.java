@@ -1,4 +1,4 @@
-
+// +
 public class Direction {
 	public static final Direction Up, Down, Left, Right, None;
 	

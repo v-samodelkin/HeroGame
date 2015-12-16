@@ -14,4 +14,5 @@ public interface IMovable extends ICell {
 	public ICell StayOn(ICell cell);
 	public ICell GetStayOn();
 	public Position GetPosition(Field field);
+	public Position IsSurrender(Position from, ICell what, Position to);
 }

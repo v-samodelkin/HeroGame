@@ -1,4 +1,4 @@
-
+// +
 public class TrapAtackAction extends TrapAction {
 
 	@Override
@@ -9,6 +9,11 @@ public class TrapAtackAction extends TrapAction {
 	@Override
 	public Trap AfterAct(IMovable movable, Trap trap) {
 		return trap.Act(movable.GetId());
+	}
+
+	@Override
+	public int GetViewId() {
+		return GameVisualizer.V_TRAP;
 	}
 
 }

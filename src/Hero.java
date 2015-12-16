@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Hero implements IMovable {
 	public final int Bonuses;
 	public final int Lives;
@@ -5,6 +8,7 @@ public class Hero implements IMovable {
 	public final Game CurrentGame;
 	public final ICell Before;
 	public final IAi Ai;
+	public final Map<Boolean, ICell>  DieChecker;
 	public int GetWeight() { return 70; };
 	public int GetDamage() { return 1; };
 	
@@ -15,6 +19,9 @@ public class Hero implements IMovable {
 		CurrentGame = game;
 		Before = before;
 		Ai = ai;
+		DieChecker = new HashMap<Boolean, ICell>();
+		DieChecker.put(true, before);
+		DieChecker.put(false, this);
 	}
 	
 	public Hero(Game game, IAi ai) {
@@ -48,19 +55,12 @@ public class Hero implements IMovable {
 	
 	@Override
 	public Position GetPosition (Field field) {
-		for (int x = 0; x < field.GetWidth(); x++)
-			for (int y = 0 ; y < field.GetLength(); y++)
-				if (field.Cells[x][y] == this)
-					return new Position(x, y);
-		return new Position();
+		return field.GetPosition(this);
 	}
 
 	@Override
 	public ICell Action(IMovable movable) {
-		if (GetWeight() > movable.GetWeight())
-			return Attacked(movable.GetDamage());
-		else
-			return movable.Attacked(GetDamage());
+		return Attacked(movable.GetDamage());
 	}
 
 	@Override
@@ -73,14 +73,11 @@ public class Hero implements IMovable {
 	}
 	@Override
 	public ICell StayOn(ICell cell) {
-		if (Lives > 0)
-			return new Hero(Bonuses, Lives, Id, CurrentGame, cell, Ai);
-		else
-			return cell;
+		return new Hero(Bonuses, Lives, Id, CurrentGame, cell, Ai).CheckDie();
 	}
 	@Override
 	public ICell GetStayOn() {
-		return (Before == null ? new EmptyCell() : Before);
+		return Before;
 	}
 	public int GetBonusesCount() {
 		return Bonuses;
@@ -88,6 +85,30 @@ public class Hero implements IMovable {
 	
 	public int GetLivesCount() {
 		return Lives;
+	}
+	
+	public ICell CheckDie() {
+		return DieChecker.get(Lives == 0);
+	}
+	@Override
+	public Position IsSurrender(Position from, ICell what, Position to) {
+		try {
+			return what.TryToScare(this, from, to);
+		} catch (Exception e) {
+			return from;
+		}
+	}
+	@Override
+	public Position TryToScare(Hero hero, Position from, Position to) {
+		return to;
+	}
+	@Override
+	public int IsEmpty() {
+		return 0;
+	}
+	
+	public int getViewId() {
+		return GameVisualizer.V_HERO;
 	}
 
 }

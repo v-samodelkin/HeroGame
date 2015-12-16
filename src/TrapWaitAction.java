@@ -1,4 +1,4 @@
-
+// +
 public class TrapWaitAction extends TrapAction {
 
 	@Override
@@ -9,6 +9,11 @@ public class TrapWaitAction extends TrapAction {
 	@Override
 	public Trap AfterAct(IMovable movable, Trap trap) {
 		return trap;
+	}
+	
+	@Override
+	public int GetViewId() {
+		return GameVisualizer.V_R_TRAP;
 	}
 
 }
