@@ -3,11 +3,11 @@ package Actions;
 import java.util.Comparator;
 import Helpers.Position;
 
-public class BonusComparator implements Comparator<Position> {
+public class PointsByDistanceComparator implements Comparator<Position> {
 
 	public final Position Centre;
 	
-	public BonusComparator (Position centre) {
+	public PointsByDistanceComparator (Position centre) {
 		Centre = centre;
 	}
 	@Override

@@ -11,7 +11,7 @@ public class DefaultAi implements IAi {
 	public Direction GetTurnDirection(Hero hero, Field viewField) {
 		Position heroPosition = hero.GetPosition(viewField);
 		List<Position> bonuses = viewField.GetBonusPositions();
-		bonuses.sort(new BonusComparator(heroPosition));
+		bonuses.sort(new PointsByDistanceComparator(heroPosition));
 		Position mostClose;
 		try {
 			mostClose = bonuses.get(0);

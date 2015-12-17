@@ -69,7 +69,7 @@ public class PriorityBfsAi implements IAi {
 
 	@Override
 	public String GetAiName() {
-		return "BF";
+		return "Pb";
 	}
 	
 	public int PositionHash(Vertex vertex) {

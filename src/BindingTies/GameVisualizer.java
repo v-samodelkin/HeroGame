@@ -26,12 +26,11 @@ public class GameVisualizer {
 		for (int i = 0; i < 30; i++)
 			System.out.println();
 		List<Hero> heroes = viewField.GetHeroes();
-		heroes.sort(new HeroesByIdComparator());
+		heroes.sort(new HeroesByPointsComparator());
 		for (int i = 0; i < heroes.size(); i++) {
 			Hero hero = heroes.get(i);
 			System.out.println("Герой [" + hero.GetId() + " , " + hero.Ai.GetAiName() + "] набрал очков: " + hero.GetBonusesCount() + ". У него осталось единиц здоровья: " + hero.GetLivesCount() + ".");
 		}
-		
 		for (int y = 0; y < viewField.GetLength(); y++) {
 			for (int x = 0; x < viewField.GetWidth(); x++) {
 				System.out.print(CharMapper.get(viewField.Cells[x][y].getViewId()));

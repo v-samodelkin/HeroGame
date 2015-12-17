@@ -95,7 +95,7 @@ public class Hero implements IMovable {
 		return DieChecker.get(Lives == 0);
 	}
 	@Override
-	public Position IsSurrender(Position from, ICell what, Position to) {
+	public Position GetPositionAfterSurrenderCheck(Position from, ICell what, Position to) {
 		try {
 			return what.TryToScare(this, from, to);
 		} catch (Exception e) {

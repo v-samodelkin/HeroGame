@@ -18,7 +18,7 @@ public class Vertex {
 	
 	static {
 		ActionByReadyToAdd = new HashMap<Boolean, IAddAction>();
-		ActionByReadyToAdd.put(false, new EmptyAction());
+		ActionByReadyToAdd.put(false, new EmptyAddAction());
 		ActionByReadyToAdd.put(true, new AddAction());
 	}
 	

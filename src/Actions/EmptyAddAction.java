@@ -4,7 +4,7 @@ import java.util.Queue;
 
 import Helpers.Vertex;
 
-public class EmptyAction implements IAddAction {
+public class EmptyAddAction implements IAddAction {
 
 	@Override
 	 public void Act(Vertex vertex, Queue<Vertex> queue, HashSet<Integer> was) {
